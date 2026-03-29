@@ -1309,6 +1309,26 @@
   background: #c0392b;
 }
 
+.photo-toggle-item.selected-hero {
+  outline: 3px solid #2c5f7c;
+  outline-offset: 2px;
+}
+
+.photo-toggle-item.selected-hero::after {
+  content: 'TOP';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #2c5f7c;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 2px 0;
+  letter-spacing: 0.1em;
+}
+
 /* Caption editor fields */
 .caption-edit-item {
   display: flex;

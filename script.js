@@ -71,6 +71,7 @@
     buildInfoFields();
     buildCaptionFields();
     buildPhotoToggles();
+    buildHeroImagePicker();
   }
 
   function closeSettings() {
@@ -282,6 +283,54 @@
     heroLead.style.display = leadVal ? '' : 'none';
     showSaveConfirm(document.getElementById('saveCopyBtn'));
   });
+
+  // ========================================
+  // Settings: Hero Image Picker
+  // ========================================
+  const heroImg = document.querySelector('.hero-img');
+
+  function buildHeroImagePicker() {
+    const picker = document.getElementById('heroImagePicker');
+    if (!picker) return;
+    picker.innerHTML = '';
+    const savedHero = localStorage.getItem('heroImage') || '';
+
+    getAllItems().forEach(item => {
+      const img = item.querySelector('img');
+      if (!img) return;
+      const src = img.getAttribute('src');
+
+      const div = document.createElement('div');
+      div.className = 'photo-toggle-item' + (src === savedHero ? ' selected-hero' : '');
+
+      const thumb = document.createElement('img');
+      thumb.src = src;
+      thumb.alt = '';
+      thumb.loading = 'lazy';
+
+      div.appendChild(thumb);
+
+      div.addEventListener('click', () => {
+        // Deselect all
+        picker.querySelectorAll('.photo-toggle-item').forEach(el => el.classList.remove('selected-hero'));
+        div.classList.add('selected-hero');
+        // Apply immediately
+        heroImg.src = src;
+        localStorage.setItem('heroImage', src);
+      });
+
+      picker.appendChild(div);
+    });
+  }
+
+  // Load saved hero image on startup
+  function loadSavedHeroImage() {
+    const saved = localStorage.getItem('heroImage');
+    if (saved && heroImg) {
+      heroImg.src = saved;
+    }
+  }
+  loadSavedHeroImage();
 
   // Load saved info on page load
   function loadSavedInfo() {
