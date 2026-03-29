@@ -75,8 +75,8 @@
     }
   }
 
-  function exportSettings() {
-    const settings = {
+  function buildSettingsJSON() {
+    return {
       _version: new Date().toISOString(),
       theme: localStorage.getItem('theme') || 'default',
       themeChosen: localStorage.getItem('themeChosen') || 'false',
@@ -86,7 +86,11 @@
       heroImage: localStorage.getItem('heroImage') || '',
       copyOverrides: JSON.parse(localStorage.getItem('copyOverrides') || '{}')
     };
-    const blob = new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' });
+  }
+
+  // Download as file (fallback)
+  function exportSettings() {
+    const blob = new Blob([JSON.stringify(buildSettingsJSON(), null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -95,7 +99,79 @@
     URL.revokeObjectURL(url);
   }
 
+  // Publish to GitHub via API
+  const REPO_OWNER = 'naokam';
+  const REPO_NAME = 'minami-yukigaya-terrace-104';
+  const SETTINGS_PATH = 'site-settings.json';
+  const statusEl = document.getElementById('publishStatus');
+  const ghTokenInput = document.getElementById('ghToken');
+
+  // Load saved token
+  ghTokenInput.value = localStorage.getItem('ghToken') || '';
+  ghTokenInput.addEventListener('change', () => {
+    localStorage.setItem('ghToken', ghTokenInput.value);
+  });
+
+  async function publishSettings() {
+    const token = ghTokenInput.value.trim();
+    if (!token) {
+      statusEl.textContent = 'GitHubトークンを入力してください。';
+      statusEl.style.color = '#c0392b';
+      return;
+    }
+    localStorage.setItem('ghToken', token);
+
+    statusEl.textContent = '公開中...';
+    statusEl.style.color = '#888';
+
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(buildSettingsJSON(), null, 2))));
+    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${SETTINGS_PATH}`;
+
+    try {
+      // Get current file SHA (needed for update)
+      let sha = null;
+      try {
+        const getRes = await fetch(apiUrl, {
+          headers: { 'Authorization': `token ${token}` }
+        });
+        if (getRes.ok) {
+          const data = await getRes.json();
+          sha = data.sha;
+        }
+      } catch (_) {}
+
+      // Create or update file
+      const body = {
+        message: '設定を更新',
+        content: content
+      };
+      if (sha) body.sha = sha;
+
+      const putRes = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (putRes.ok) {
+        statusEl.innerHTML = '公開完了（反映まで1〜2分かかります）';
+        statusEl.style.color = '#2e7d32';
+      } else {
+        const err = await putRes.json();
+        statusEl.textContent = 'エラー: ' + (err.message || putRes.status);
+        statusEl.style.color = '#c0392b';
+      }
+    } catch (e) {
+      statusEl.textContent = '通信エラー: ' + e.message;
+      statusEl.style.color = '#c0392b';
+    }
+  }
+
   document.getElementById('exportSettingsBtn').addEventListener('click', exportSettings);
+  document.getElementById('publishSettingsBtn').addEventListener('click', publishSettings);
 
   // ========================================
   // Hidden Mode — Logo 5-click
@@ -282,17 +358,15 @@
   themeOptions.forEach(opt => {
     opt.addEventListener('click', () => {
       if (opt.dataset.theme === 'auto') {
-        // Reset to auto-rotation mode
         localStorage.removeItem('themeChosen');
-        // Apply next in rotation immediately
         const idx = parseInt(localStorage.getItem('themeRotation') || '0', 10);
         applyTheme(ALL_THEMES[idx % ALL_THEMES.length], false);
-        // Mark auto as active
         themeOptions.forEach(o => o.classList.remove('active'));
         opt.classList.add('active');
       } else {
         applyTheme(opt.dataset.theme, true);
       }
+      autoPublishIfTokenSet();
     });
   });
 
@@ -386,6 +460,7 @@
         // Apply immediately
         heroImg.src = src;
         localStorage.setItem('heroImage', src);
+        autoPublishIfTokenSet();
       });
 
       picker.appendChild(div);
@@ -581,6 +656,16 @@
       btn.textContent = original;
       btn.disabled = false;
     }, 1500);
+
+    // Auto-publish if GitHub token is configured
+    autoPublishIfTokenSet();
+  }
+
+  function autoPublishIfTokenSet() {
+    const token = localStorage.getItem('ghToken');
+    if (token) {
+      publishSettings();
+    }
   }
 
   // ========================================

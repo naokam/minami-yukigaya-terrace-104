@@ -592,8 +592,18 @@
       </div>
       <div class="settings-export">
         <hr style="border:none;border-top:1px solid #e0e0e0;margin:24px 0 16px">
-        <p class="settings-hint">変更を他のユーザーにも反映するには、設定ファイルをダウンロードしてリポジトリにコミットしてください。</p>
-        <button class="btn btn-primary" id="exportSettingsBtn" style="width:100%">公開用設定をダウンロード</button>
+        <h3 class="settings-sub-title">公開設定</h3>
+        <p class="settings-hint">保存した設定は自動で全ユーザーに反映されます。初回のみGitHubトークンの設定が必要です。</p>
+        <div class="settings-field" id="tokenField">
+          <label>GitHub Personal Access Token <small style="color:#999">（このブラウザにのみ保存）</small></label>
+          <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxx">
+          <small style="color:#999;display:block;margin-top:4px">repo権限のトークンを<a href="https://github.com/settings/tokens/new?scopes=repo&description=minami-yukigaya-settings" target="_blank" style="color:#2c5f7c">こちら</a>で作成</small>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="btn btn-primary" id="publishSettingsBtn" style="flex:1">設定を公開</button>
+          <button class="btn btn-secondary" id="exportSettingsBtn" style="flex:0 0 auto">JSONダウンロード</button>
+        </div>
+        <div id="publishStatus" style="margin-top:8px;font-size:0.85rem"></div>
       </div>
     </div>
   </div>
