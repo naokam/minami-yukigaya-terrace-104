@@ -39,6 +39,65 @@
   let touchStartX = 0;
 
   // ========================================
+  // Shared Settings (site-settings.json)
+  // ========================================
+  // Load shared settings from site-settings.json on startup.
+  // These are applied BEFORE localStorage, so shared settings
+  // become the baseline for all users.
+  let sharedSettingsLoaded = false;
+
+  async function loadSharedSettings() {
+    try {
+      const res = await fetch('site-settings.json?v=' + Date.now());
+      if (!res.ok) return;
+      const s = await res.json();
+
+      // Apply shared settings to localStorage only if user hasn't overridden locally
+      // Use a version stamp to detect if shared settings have been updated
+      const localVer = localStorage.getItem('sharedSettingsVersion') || '';
+      const remoteVer = s._version || '';
+      const isNewer = remoteVer !== localVer;
+
+      if (isNewer) {
+        // Merge shared settings into localStorage
+        if (s.theme !== undefined) localStorage.setItem('theme', s.theme);
+        if (s.themeChosen !== undefined) localStorage.setItem('themeChosen', s.themeChosen);
+        if (s.excludedPhotos) localStorage.setItem('excludedPhotos', JSON.stringify(s.excludedPhotos));
+        if (s.captions) localStorage.setItem('captions', JSON.stringify(s.captions));
+        if (s.propertyInfo) localStorage.setItem('propertyInfo', JSON.stringify(s.propertyInfo));
+        if (s.heroImage !== undefined) localStorage.setItem('heroImage', s.heroImage);
+        if (s.copyOverrides) localStorage.setItem('copyOverrides', JSON.stringify(s.copyOverrides));
+        localStorage.setItem('sharedSettingsVersion', remoteVer);
+      }
+      sharedSettingsLoaded = true;
+    } catch (e) {
+      // site-settings.json not found or invalid — use localStorage as-is
+    }
+  }
+
+  function exportSettings() {
+    const settings = {
+      _version: new Date().toISOString(),
+      theme: localStorage.getItem('theme') || 'default',
+      themeChosen: localStorage.getItem('themeChosen') || 'false',
+      excludedPhotos: JSON.parse(localStorage.getItem('excludedPhotos') || '[]'),
+      captions: JSON.parse(localStorage.getItem('captions') || '{}'),
+      propertyInfo: JSON.parse(localStorage.getItem('propertyInfo') || '{}'),
+      heroImage: localStorage.getItem('heroImage') || '',
+      copyOverrides: JSON.parse(localStorage.getItem('copyOverrides') || '{}')
+    };
+    const blob = new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'site-settings.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  document.getElementById('exportSettingsBtn').addEventListener('click', exportSettings);
+
+  // ========================================
   // Hidden Mode — Logo 5-click
   // ========================================
   let logoClickCount = 0;
@@ -793,7 +852,27 @@
     applySavedCaptions();
     updateGallery();
   }
-  loadUploadedPhotos();
+
+  // Startup: load shared settings first, then uploaded photos, then re-apply theme
+  async function initApp() {
+    await loadSharedSettings();
+
+    // Re-apply theme after shared settings are loaded (may have changed localStorage)
+    const currentTheme = localStorage.getItem('theme') || 'default';
+    applyTheme(currentTheme, false);
+    if (localStorage.getItem('themeChosen') !== 'true') {
+      themeOptions.forEach(opt => opt.classList.remove('active'));
+      const autoBtn = document.querySelector('.theme-option[data-theme="auto"]');
+      if (autoBtn) autoBtn.classList.add('active');
+    }
+
+    // Re-apply property info & hero image from shared settings
+    loadSavedInfo();
+    loadSavedHeroImage();
+
+    await loadUploadedPhotos();
+  }
+  initApp();
 
   // ========================================
   // Hamburger Menu
