@@ -1,0 +1,25 @@
+{
+  "_version": "2026-03-29T11:33:49.425Z",
+  "theme": "luxury",
+  "themeChosen": "false",
+  "excludedPhotos": [
+    "DSC01738.jpeg",
+    "DSC01742.jpeg",
+    "DSC01744.jpeg",
+    "DSC01770.jpeg",
+    "DSC07395.jpeg",
+    "DSC01832.jpeg",
+    "IMG_3478.jpeg",
+    "DSC01739.jpeg"
+  ],
+  "captions": {},
+  "propertyInfo": {},
+  "heroImage": "南雪谷テラス１０４紹介写真/DSC01749.jpeg",
+  "copyOverrides": {
+    "green": {
+      "title": "南雪谷テラス",
+      "subtitle": "光と緑に守られた、穏やかな住まい",
+      "lead": "南向きの大窓から注ぐ陽光。プライベートテラスに揺れる緑。<br>第一種低層住居専用地域の静けさが、日常をやさしく包みます。"
+    }
+  }
+}
