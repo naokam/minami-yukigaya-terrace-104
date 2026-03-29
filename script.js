@@ -547,6 +547,41 @@
   }
   applySavedCaptions();
 
+  // Rebalance captions: ensure no duplicates within visible items of same category.
+  // Only touches items whose captions haven't been manually saved.
+  function rebalanceCaptions() {
+    const savedCaptions = JSON.parse(localStorage.getItem('captions') || '{}');
+    const visible = getFilteredItems();
+    const usedByCategory = {};
+
+    visible.forEach(item => {
+      const img = item.querySelector('img');
+      const caption = item.querySelector('.gallery-caption');
+      if (!img || !caption) return;
+
+      const filename = img.getAttribute('src').split('/').pop();
+      const cat = item.dataset.category;
+
+      // If user has manually saved this caption, or it's an original photo, keep it
+      if (savedCaptions[filename]) return;
+      if (!item.dataset.uploadedId) { usedByCategory[cat] = usedByCategory[cat] || new Set(); usedByCategory[cat].add(caption.textContent); return; }
+
+      if (!usedByCategory[cat]) usedByCategory[cat] = new Set();
+      const templates = CAPTION_TEMPLATES[cat] || ['追加写真'];
+
+      // Find next unused caption template
+      let chosen = templates[0];
+      for (const t of templates) {
+        if (!usedByCategory[cat].has(t)) {
+          chosen = t;
+          break;
+        }
+      }
+      usedByCategory[cat].add(chosen);
+      caption.textContent = chosen;
+    });
+  }
+
   // ========================================
   // Settings: Photo Selection
   // ========================================
@@ -1005,12 +1040,35 @@
       }
     });
 
+    // Rebalance layout and captions on visible items
+    rebalanceLayout(filtered.slice(0, Math.min(visibleCount, filtered.length)));
+    rebalanceCaptions();
+
     // Toggle load more button
     if (visibleCount >= filtered.length) {
       loadMoreBtn.classList.add('hidden');
     } else {
       loadMoreBtn.classList.remove('hidden');
     }
+  }
+
+  // Dynamically assign gallery-item--wide to maintain layout rhythm.
+  // Rules: 1st visible item is wide, then every 5th item, and the first
+  // item of each new category group gets wide.
+  function rebalanceLayout(visibleItems) {
+    const seenCategories = new Set();
+
+    visibleItems.forEach((item, i) => {
+      item.classList.remove('gallery-item--wide');
+      const cat = item.dataset.category;
+      const isFirstOfCategory = !seenCategories.has(cat);
+      if (isFirstOfCategory) seenCategories.add(cat);
+
+      // Assign wide: first item, first of each category, or every 6th
+      if (i === 0 || isFirstOfCategory || (i > 0 && i % 6 === 0)) {
+        item.classList.add('gallery-item--wide');
+      }
+    });
   }
 
   filterBtns.forEach(btn => {
