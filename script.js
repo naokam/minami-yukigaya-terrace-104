@@ -65,9 +65,15 @@
     }
   }
 
+  let savedScrollY = 0;
+
   function openSettings() {
+    savedScrollY = window.scrollY;
     settingsOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${savedScrollY}px`;
+    document.body.style.width = '100%';
     buildInfoFields();
     buildCaptionFields();
     buildPhotoToggles();
@@ -77,6 +83,10 @@
   function closeSettings() {
     settingsOverlay.classList.remove('active');
     document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, savedScrollY);
     // Refresh gallery to reflect any changes made in settings
     applyExcludedPhotos();
     applySavedCaptions();
@@ -736,7 +746,13 @@
     // Close settings and scroll to gallery
     settingsOverlay.classList.remove('active');
     document.body.style.overflow = '';
-    document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, savedScrollY);
+    setTimeout(() => {
+      document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
+    }, 50);
   }
 
   function addUploadedPhotoToGallery(photo) {
@@ -872,19 +888,29 @@
     });
   }
 
+  let lightboxSavedScrollY = 0;
+
   function openLightbox(index) {
     lightboxImages = getVisibleImages();
     lightboxCaptions = getVisibleCaptions();
     if (index < 0 || index >= lightboxImages.length) return;
     lightboxIndex = index;
     showLightboxImage();
+    lightboxSavedScrollY = window.scrollY;
     lightbox.classList.add('active');
     document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${lightboxSavedScrollY}px`;
+    document.body.style.width = '100%';
   }
 
   function closeLightbox() {
     lightbox.classList.remove('active');
     document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, lightboxSavedScrollY);
   }
 
   function showLightboxImage() {

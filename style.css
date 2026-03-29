@@ -1026,8 +1026,17 @@
 
 .settings-body {
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 24px;
   flex: 1;
+  min-height: 0;
+}
+
+.settings-body::after {
+  content: '';
+  display: block;
+  height: 24px;
+  flex-shrink: 0;
 }
 
 .settings-content {
@@ -1362,28 +1371,92 @@
 }
 
 @media (max-width: 768px) {
+  .settings-overlay {
+    align-items: stretch;
+  }
   .settings-panel {
-    width: 96%;
-    max-height: 90vh;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100vh;
+    height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .settings-header {
+    padding: 14px 16px 12px;
+    flex-shrink: 0;
+  }
+  .settings-header h2 {
+    font-size: 1rem;
   }
   .settings-tabs {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     padding: 0 12px;
+    flex-shrink: 0;
+    scrollbar-width: none;
+  }
+  .settings-tabs::-webkit-scrollbar {
+    display: none;
   }
   .settings-tab {
     padding: 10px 14px;
     font-size: 0.8rem;
+    flex-shrink: 0;
   }
   .settings-body {
     padding: 16px;
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    min-height: 0;
+  }
+  .settings-field input,
+  .settings-field textarea {
+    font-size: 1rem;
+  }
+  .theme-grid {
+    gap: 2px;
+  }
+  .theme-option {
+    padding: 10px;
+    gap: 10px;
+  }
+  .theme-swatch {
+    width: 28px;
+    height: 28px;
+  }
+  .theme-label strong {
+    font-size: 0.85rem;
+  }
+  .theme-label small {
+    font-size: 0.7rem;
   }
   .photo-toggle-grid {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 6px;
+  }
+  .caption-edit-item {
     gap: 8px;
   }
   .caption-edit-item img {
-    width: 60px;
-    height: 40px;
+    width: 56px;
+    height: 38px;
+  }
+  .caption-edit-item input {
+    font-size: 1rem;
+  }
+  .settings-sub-title {
+    font-size: 0.9rem;
+  }
+  .settings-hint {
+    font-size: 0.8rem;
+  }
+  .upload-area {
+    padding: 24px 16px;
+  }
+  .upload-area p {
+    font-size: 0.8rem;
   }
 }
 
