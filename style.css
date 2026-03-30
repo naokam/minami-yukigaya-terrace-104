@@ -1838,6 +1838,9 @@ ul {
   font-family: var(--font-heading);
   letter-spacing: 0.06em;
   margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .showcase-desc {
@@ -1846,6 +1849,9 @@ ul {
   font-weight: 300;
   letter-spacing: 0.02em;
   opacity: 0.85;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Desktop: explicit placement on 12-col grid */
@@ -1873,8 +1879,8 @@ ul {
 
 @media (max-width: 768px) {
   .showcase-grid {
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: auto;
+    display: flex;
+    flex-direction: column;
     gap: 6px;
   }
   .showcase-item,
@@ -1883,31 +1889,19 @@ ul {
   .showcase-item--3,
   .showcase-item--4,
   .showcase-item--5,
-  .showcase-item--6 {
-    grid-column: span 1;
-    grid-row: span 1;
-    aspect-ratio: 3 / 2;
-  }
-  .showcase-item--1 {
-    grid-column: span 2;
-    aspect-ratio: 16 / 9;
-  }
+  .showcase-item--6,
   .showcase-item--7 {
-    grid-column: span 2;
-    grid-row: span 1;
-    aspect-ratio: 21 / 9;
+    aspect-ratio: 16 / 9;
+    width: 100%;
   }
   .showcase-label {
-    padding: 20px 8px 8px;
+    padding: 20px 12px 10px;
   }
   .showcase-cat {
-    font-size: 0.75rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 0.9rem;
   }
   .showcase-desc {
-    display: none;
+    font-size: 0.7rem;
   }
 }
 
