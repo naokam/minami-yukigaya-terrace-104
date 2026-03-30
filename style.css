@@ -1886,7 +1886,7 @@ ul {
   .showcase-item--6 {
     grid-column: span 1;
     grid-row: span 1;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 3 / 2;
   }
   .showcase-item--1 {
     grid-column: span 2;
@@ -1897,11 +1897,17 @@ ul {
     grid-row: span 1;
     aspect-ratio: 21 / 9;
   }
+  .showcase-label {
+    padding: 20px 8px 8px;
+  }
   .showcase-cat {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .showcase-desc {
-    font-size: 0.7rem;
+    display: none;
   }
 }
 
