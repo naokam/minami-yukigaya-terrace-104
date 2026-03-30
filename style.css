@@ -1747,6 +1747,7 @@ ul {
   border-radius: var(--radius);
   transition: all 0.3s ease;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .hero-link:hover {
@@ -1914,10 +1915,17 @@ ul {
 
 .filter-bar {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
   justify-content: center;
   gap: 8px;
   margin-bottom: 32px;
+}
+
+.filter-bar::-webkit-scrollbar {
+  display: none;
 }
 
 .filter-btn {
@@ -1931,6 +1939,8 @@ ul {
   border-radius: 100px;
   cursor: pointer;
   transition: var(--transition);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .filter-btn:hover,
@@ -1988,6 +1998,9 @@ ul {
   font-weight: 400;
   letter-spacing: 0.02em;
   pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .load-more-wrap {
@@ -2460,16 +2473,8 @@ ul {
   }
 
   .filter-bar {
-    gap: 8px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
     justify-content: flex-start;
     padding-bottom: 8px;
-    scrollbar-width: none;
-  }
-  .filter-bar::-webkit-scrollbar {
-    display: none;
   }
 
   .filter-btn {
