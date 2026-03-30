@@ -2524,7 +2524,7 @@ ul {
 
 /* ========================================
    Theme: 和モダン
-   Noto Serif JP / 土壁色・縦書き装飾・余韻
+   Noto Serif JP / 土壁色・横線装飾・余韻
    ======================================== */
 [data-theme="japanese"] {
   --color-primary: #8c7851;
@@ -2587,7 +2587,7 @@ ul {
   letter-spacing: 0.06em;
 }
 
-/* Japanese: section title — vertical line accent */
+/* Japanese: section title — horizontal line accent */
 [data-theme="japanese"] .section-title {
   font-family: 'Noto Serif JP', serif;
   font-weight: 500;
@@ -2596,8 +2596,8 @@ ul {
 }
 
 [data-theme="japanese"] .section-title::after {
-  width: 1px;
-  height: 28px;
+  width: 40px;
+  height: 1px;
   margin: 16px auto 0;
   background: #8c7851;
 }
