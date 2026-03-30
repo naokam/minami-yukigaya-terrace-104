@@ -136,7 +136,7 @@
 
 /* Warm: features - 2 column, large serif cards */
 [data-theme="warm"] .features-grid {
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
   gap: 28px;
 }
 
@@ -1797,9 +1797,9 @@ ul {
    ======================================== */
 .showcase-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 220px;
-  gap: 12px;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: 140px;
+  gap: 10px;
 }
 
 .showcase-item {
@@ -1848,44 +1848,54 @@ ul {
   opacity: 0.85;
 }
 
-/* Large: spans 2 cols and 2 rows */
-.showcase-item--large {
-  grid-column: span 2;
-  grid-row: span 2;
-}
-
-/* Wide: spans 2 cols */
-.showcase-item--wide {
-  grid-column: span 2;
-}
+/* Desktop: explicit placement on 12-col grid */
+.showcase-item--1 { grid-column: span 7; grid-row: span 3; } /* リビング: 大 */
+.showcase-item--2 { grid-column: span 5; grid-row: span 2; } /* キッチン */
+.showcase-item--3 { grid-column: span 5; grid-row: span 1; } /* 和室 */
+.showcase-item--4 { grid-column: span 5; grid-row: span 2; } /* 外観 */
+.showcase-item--5 { grid-column: span 3; grid-row: span 1; } /* 寝室 */
+.showcase-item--6 { grid-column: span 4; grid-row: span 1; } /* 水回り */
+.showcase-item--7 { grid-column: span 12; grid-row: span 2; } /* テラス: フル横長 */
 
 @media (max-width: 1024px) {
   .showcase-grid {
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 180px;
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: 150px;
   }
-  .showcase-item--large {
-    grid-column: span 2;
-    grid-row: span 2;
-  }
-  .showcase-item--wide {
-    grid-column: span 1;
-  }
+  .showcase-item--1 { grid-column: span 6; grid-row: span 2; }
+  .showcase-item--2 { grid-column: span 3; grid-row: span 2; }
+  .showcase-item--3 { grid-column: span 3; grid-row: span 2; }
+  .showcase-item--4 { grid-column: span 4; grid-row: span 2; }
+  .showcase-item--5 { grid-column: span 2; grid-row: span 2; }
+  .showcase-item--6 { grid-column: span 3; grid-row: span 1; }
+  .showcase-item--7 { grid-column: span 3; grid-row: span 1; }
 }
 
 @media (max-width: 768px) {
   .showcase-grid {
     grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: 160px;
-    gap: 8px;
+    grid-auto-rows: auto;
+    gap: 6px;
   }
-  .showcase-item--large {
+  .showcase-item,
+  .showcase-item--1,
+  .showcase-item--2,
+  .showcase-item--3,
+  .showcase-item--4,
+  .showcase-item--5,
+  .showcase-item--6 {
+    grid-column: span 1;
+    grid-row: span 1;
+    aspect-ratio: 4 / 3;
+  }
+  .showcase-item--1 {
+    grid-column: span 2;
+    aspect-ratio: 16 / 9;
+  }
+  .showcase-item--7 {
     grid-column: span 2;
     grid-row: span 1;
-    aspect-ratio: 2 / 1;
-  }
-  .showcase-item--wide {
-    grid-column: span 2;
+    aspect-ratio: 21 / 9;
   }
   .showcase-cat {
     font-size: 0.9rem;
@@ -1932,7 +1942,7 @@ ul {
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
   gap: var(--gallery-gap);
 }
 
@@ -2451,6 +2461,15 @@ ul {
 
   .filter-bar {
     gap: 8px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    justify-content: flex-start;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+  }
+  .filter-bar::-webkit-scrollbar {
+    display: none;
   }
 
   .filter-btn {
@@ -2499,26 +2518,9 @@ ul {
   }
 }
 
-/* 2 columns */
-@media (min-width: 768px) {
-  .gallery-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* 3 columns */
-@media (min-width: 1024px) {
-  .gallery-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* 4 columns */
-@media (min-width: 1280px) {
-  .gallery-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
+/* Gallery base columns — auto-fill handles desktop,
+   theme overrides handle specific layouts.
+   Mobile 1-col is in the max-width:768px block above. */
 
 /* ========================================
    Theme: 和モダン
