@@ -1793,6 +1793,109 @@ ul {
 }
 
 /* ========================================
+   Category Showcase
+   ======================================== */
+.showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 220px;
+  gap: 12px;
+}
+
+.showcase-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.showcase-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.showcase-item:hover img {
+  transform: scale(1.05);
+}
+
+.showcase-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 32px 16px 14px;
+  background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%);
+  color: #fff;
+}
+
+.showcase-cat {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  letter-spacing: 0.06em;
+  margin-bottom: 2px;
+}
+
+.showcase-desc {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+}
+
+/* Large: spans 2 cols and 2 rows */
+.showcase-item--large {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+/* Wide: spans 2 cols */
+.showcase-item--wide {
+  grid-column: span 2;
+}
+
+@media (max-width: 1024px) {
+  .showcase-grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 180px;
+  }
+  .showcase-item--large {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  .showcase-item--wide {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .showcase-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 160px;
+    gap: 8px;
+  }
+  .showcase-item--large {
+    grid-column: span 2;
+    grid-row: span 1;
+    aspect-ratio: 2 / 1;
+  }
+  .showcase-item--wide {
+    grid-column: span 2;
+  }
+  .showcase-cat {
+    font-size: 0.9rem;
+  }
+  .showcase-desc {
+    font-size: 0.7rem;
+  }
+}
+
+/* ========================================
    Gallery
    ======================================== */
 .gallery-section {

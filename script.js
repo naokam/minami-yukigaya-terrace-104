@@ -1235,6 +1235,25 @@
   }
 
   // ========================================
+  // Category Showcase — click to jump + filter gallery
+  // ========================================
+  document.querySelectorAll('.showcase-item[data-cat]').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const cat = item.dataset.cat;
+      // Activate matching filter button
+      filterBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === cat);
+      });
+      currentFilter = cat;
+      visibleCount = BATCH_SIZE;
+      updateGallery();
+      // Scroll to gallery
+      document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // ========================================
   // Smooth Scroll
   // ========================================
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
