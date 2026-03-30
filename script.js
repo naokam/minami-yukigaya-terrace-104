@@ -1203,6 +1203,38 @@
   }, { passive: true });
 
   // ========================================
+  // Hero Slideshow — rotate through category representative photos
+  // ========================================
+  const heroSlideImg = document.getElementById('heroSlideImg');
+  const heroSlidePhotos = [
+    '南雪谷テラス１０４紹介写真/DSC01724.jpeg',  // リビング
+    '南雪谷テラス１０４紹介写真/IMG_2150.jpeg',  // 外観
+    '南雪谷テラス１０４紹介写真/DSC01810.jpeg',  // キッチン
+    '南雪谷テラス１０４紹介写真/DSC01774.jpeg',  // 寝室
+    '南雪谷テラス１０４紹介写真/DSC01885.jpeg',  // 和室
+    '南雪谷テラス１０４紹介写真/DSC01827.jpeg',  // 水回り
+    '南雪谷テラス１０４紹介写真/IMG_9182.jpeg',  // バルコニー
+  ];
+  let heroSlideIndex = 0;
+
+  // Respect user-selected hero image
+  function isHeroUserSelected() {
+    return !!localStorage.getItem('heroImage');
+  }
+
+  if (!isHeroUserSelected() && heroSlideImg) {
+    setInterval(() => {
+      if (isHeroUserSelected()) return;
+      heroSlideIndex = (heroSlideIndex + 1) % heroSlidePhotos.length;
+      heroSlideImg.classList.add('fade');
+      setTimeout(() => {
+        heroSlideImg.src = heroSlidePhotos[heroSlideIndex];
+        heroSlideImg.classList.remove('fade');
+      }, 800);
+    }, 5000);
+  }
+
+  // ========================================
   // Smooth Scroll
   // ========================================
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
