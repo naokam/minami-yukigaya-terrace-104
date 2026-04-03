@@ -1607,7 +1607,7 @@ ul {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: var(--header-height);
+  height: 64px;
 }
 
 .header-logo {
@@ -2441,6 +2441,10 @@ ul {
   .section-title {
     font-size: 1.4rem;
     margin-bottom: 32px;
+  }
+
+  .header-inner {
+    height: 56px;
   }
 
   /* Header mobile */
