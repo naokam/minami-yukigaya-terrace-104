@@ -14,7 +14,7 @@
   --color-card-bg: #fff;
   --font-family: 'Noto Sans JP', sans-serif;
   --font-heading: 'Noto Sans JP', sans-serif;
-  --header-height: 64px;
+  --header-height: 88px;
   --container-max: 1280px;
   --radius: 6px;
   --radius-lg: 6px;
@@ -2431,7 +2431,7 @@ ul {
 /* Mobile */
 @media (max-width: 768px) {
   :root {
-    --header-height: 56px;
+    --header-height: 80px;
   }
 
   .section {
