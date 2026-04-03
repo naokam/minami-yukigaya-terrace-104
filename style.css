@@ -2261,6 +2261,16 @@ ul {
   padding: 40px 20px;
 }
 
+.footer-disclaimer {
+  font-size: 0.78rem;
+  line-height: 1.7;
+  color: #aaa;
+  max-width: 640px;
+  margin: 0 auto 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
 .footer-company {
   font-size: 1rem;
   font-weight: 500;
