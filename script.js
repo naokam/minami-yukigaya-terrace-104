@@ -213,6 +213,7 @@
     buildCaptionFields();
     buildPhotoToggles();
     buildHeroImagePicker();
+    if (window._renderAnalytics) window._renderAnalytics();
   }
 
   function closeSettings() {
@@ -1501,6 +1502,9 @@
     if (analyticsTab) {
       analyticsTab.addEventListener('click', renderAnalytics);
     }
+
+    // Expose for openSettings to call
+    window._renderAnalytics = renderAnalytics;
   })();
 
 })();
