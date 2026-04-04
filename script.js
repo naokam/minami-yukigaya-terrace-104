@@ -63,6 +63,7 @@
         if (s.captions) localStorage.setItem('captions', JSON.stringify(s.captions));
         if (s.propertyInfo) localStorage.setItem('propertyInfo', JSON.stringify(s.propertyInfo));
         if (s.heroImage !== undefined) localStorage.setItem('heroImage', s.heroImage);
+        if (s.heroImages) localStorage.setItem('heroImages', JSON.stringify(s.heroImages));
         if (s.copyOverrides) localStorage.setItem('copyOverrides', JSON.stringify(s.copyOverrides));
         localStorage.setItem('sharedSettingsVersion', remoteVer);
       }
@@ -81,6 +82,7 @@
       captions: JSON.parse(localStorage.getItem('captions') || '{}'),
       propertyInfo: JSON.parse(localStorage.getItem('propertyInfo') || '{}'),
       heroImage: localStorage.getItem('heroImage') || '',
+      heroImages: JSON.parse(localStorage.getItem('heroImages') || '[]'),
       copyOverrides: JSON.parse(localStorage.getItem('copyOverrides') || '{}')
     };
   }
@@ -430,11 +432,19 @@
   // ========================================
   const heroImg = document.querySelector('.hero-img');
 
+  function getHeroImages() {
+    try { return JSON.parse(localStorage.getItem('heroImages')) || []; }
+    catch { return []; }
+  }
+
   function buildHeroImagePicker() {
     const picker = document.getElementById('heroImagePicker');
     if (!picker) return;
     picker.innerHTML = '';
-    const savedHero = localStorage.getItem('heroImage') || '';
+    const savedHeroes = getHeroImages();
+    // Also support legacy single heroImage
+    const legacySingle = localStorage.getItem('heroImage');
+    const selected = savedHeroes.length > 0 ? savedHeroes : (legacySingle ? [legacySingle] : []);
 
     getAllItems().forEach(item => {
       const img = item.querySelector('img');
@@ -442,7 +452,7 @@
       const src = img.getAttribute('src');
 
       const div = document.createElement('div');
-      div.className = 'photo-toggle-item' + (src === savedHero ? ' selected-hero' : '');
+      div.className = 'photo-toggle-item' + (selected.includes(src) ? ' selected-hero' : '');
 
       const thumb = document.createElement('img');
       thumb.src = src;
@@ -452,30 +462,35 @@
       div.appendChild(thumb);
 
       div.addEventListener('click', () => {
-        if (div.classList.contains('selected-hero')) {
-          // Cancel selection — revert to auto slideshow
-          div.classList.remove('selected-hero');
-          localStorage.removeItem('heroImage');
-          autoPublishIfTokenSet();
+        div.classList.toggle('selected-hero');
+        // Collect all selected
+        const allSelected = [];
+        picker.querySelectorAll('.photo-toggle-item.selected-hero img').forEach(i => {
+          allSelected.push(i.getAttribute('src'));
+        });
+        if (allSelected.length > 0) {
+          localStorage.setItem('heroImages', JSON.stringify(allSelected));
+          localStorage.setItem('heroImage', allSelected[0]);
+          heroImg.src = allSelected[0];
         } else {
-          // Select this image
-          picker.querySelectorAll('.photo-toggle-item').forEach(el => el.classList.remove('selected-hero'));
-          div.classList.add('selected-hero');
-          heroImg.src = src;
-          localStorage.setItem('heroImage', src);
-          autoPublishIfTokenSet();
+          localStorage.removeItem('heroImages');
+          localStorage.removeItem('heroImage');
         }
+        autoPublishIfTokenSet();
       });
 
       picker.appendChild(div);
     });
   }
 
-  // Load saved hero image on startup
+  // Load saved hero image(s) on startup
   function loadSavedHeroImage() {
-    const saved = localStorage.getItem('heroImage');
-    if (saved && heroImg) {
-      heroImg.src = saved;
+    const heroes = getHeroImages();
+    if (heroes.length > 0 && heroImg) {
+      heroImg.src = heroes[0];
+    } else {
+      const single = localStorage.getItem('heroImage');
+      if (single && heroImg) heroImg.src = single;
     }
   }
   loadSavedHeroImage();
@@ -1221,18 +1236,31 @@
   ];
   let heroSlideIndex = 0;
 
-  // Respect user-selected hero image
-  function isHeroUserSelected() {
-    return !!localStorage.getItem('heroImage');
+  // Determine which photos to use for the slideshow
+  function getHeroSlideList() {
+    try {
+      const userSelected = JSON.parse(localStorage.getItem('heroImages') || '[]');
+      if (userSelected.length > 0) return userSelected;
+    } catch {}
+    // Legacy single selection
+    const single = localStorage.getItem('heroImage');
+    if (single) return [single];
+    // Default slideshow
+    return heroSlidePhotos;
   }
 
-  if (!isHeroUserSelected() && heroSlideImg) {
+  if (heroSlideImg) {
+    const initialList = getHeroSlideList();
+    if (initialList.length > 0) {
+      heroSlideImg.src = initialList[0];
+    }
     setInterval(() => {
-      if (isHeroUserSelected()) return;
-      heroSlideIndex = (heroSlideIndex + 1) % heroSlidePhotos.length;
+      const list = getHeroSlideList();
+      if (list.length <= 1) return;
+      heroSlideIndex = (heroSlideIndex + 1) % list.length;
       heroSlideImg.classList.add('fade');
       setTimeout(() => {
-        heroSlideImg.src = heroSlidePhotos[heroSlideIndex];
+        heroSlideImg.src = list[heroSlideIndex];
         heroSlideImg.classList.remove('fade');
       }, 800);
     }, 5000);
