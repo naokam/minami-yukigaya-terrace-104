@@ -1054,6 +1054,46 @@
   line-height: 1.6;
 }
 
+.analytics-summary {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.analytics-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.analytics-card {
+  background: #fff;
+  border-radius: 6px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.analytics-card .analytics-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  display: block;
+}
+
+.analytics-card .analytics-label {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 4px;
+  display: block;
+}
+
+.analytics-note {
+  font-size: 0.78rem;
+  color: #999;
+  margin-top: 16px;
+}
+
 .settings-sub-title {
   font-size: 0.95rem;
   font-weight: 700;

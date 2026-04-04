@@ -10,6 +10,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@300;400;500;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Shippori+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-886RKLGZHD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-886RKLGZHD');
+  </script>
 </head>
 <body>
 
@@ -527,6 +535,7 @@
         <button class="settings-tab" data-tab="info">物件情報</button>
         <button class="settings-tab" data-tab="captions">キャプション</button>
         <button class="settings-tab" data-tab="photos">写真選択</button>
+        <button class="settings-tab" data-tab="analytics">アクセス解析</button>
       </div>
       <div class="settings-body">
         <!-- デザインタブ -->
@@ -635,6 +644,15 @@
           <p class="settings-hint">クリックで表示/非表示を切り替え。非表示の写真はギャラリーから除外されます。</p>
           <div id="photoToggles"></div>
           <button class="btn btn-primary" id="savePhotosBtn" style="margin-top:16px">保存する</button>
+        </div>
+        <!-- アクセス解析タブ -->
+        <div class="settings-content" data-content="analytics">
+          <h3 class="settings-sub-title">アクセス解析</h3>
+          <p class="settings-hint">Google Analytics (GA4) によるアクセスデータです。詳細はGA4ダッシュボードで確認できます。</p>
+          <div class="analytics-summary" id="analyticsSummary">
+            <p>読み込み中…</p>
+          </div>
+          <a href="https://analytics.google.com/analytics/web/#/p/G-886RKLGZHD" target="_blank" rel="noopener" class="btn btn-secondary" style="margin-top:16px;display:inline-block;text-align:center">GA4ダッシュボードを開く</a>
         </div>
       </div>
       <div class="settings-export">

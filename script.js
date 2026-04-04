@@ -1318,4 +1318,93 @@
     });
   });
 
+  // ========================================
+  // Analytics — simple client-side page view log
+  // ========================================
+  (function initAnalytics() {
+    const STORAGE_KEY = 'site_analytics';
+
+    function getLog() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+      catch { return []; }
+    }
+
+    // Record this page view
+    const entry = {
+      ts: Date.now(),
+      date: new Date().toISOString().slice(0, 10),
+      path: location.pathname,
+      ref: document.referrer || '(direct)',
+      ua: navigator.userAgent
+    };
+    const log = getLog();
+    log.push(entry);
+    // Keep last 1000 entries
+    if (log.length > 1000) log.splice(0, log.length - 1000);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(log));
+
+    // Render analytics summary when the tab is opened
+    const summary = document.getElementById('analyticsSummary');
+    if (!summary) return;
+
+    function renderAnalytics() {
+      const data = getLog();
+      const now = Date.now();
+      const day = 24 * 60 * 60 * 1000;
+      const today = new Date().toISOString().slice(0, 10);
+
+      const totalViews = data.length;
+      const todayViews = data.filter(e => e.date === today).length;
+      const last7 = data.filter(e => now - e.ts < 7 * day).length;
+      const last30 = data.filter(e => now - e.ts < 30 * day).length;
+
+      // Unique days with visits
+      const uniqueDays = new Set(data.map(e => e.date)).size;
+
+      // Referrer breakdown
+      const refs = {};
+      data.forEach(e => {
+        let r = '(direct)';
+        if (e.ref && e.ref !== '(direct)') {
+          try { r = new URL(e.ref).hostname; } catch { r = e.ref; }
+        }
+        refs[r] = (refs[r] || 0) + 1;
+      });
+      const topRefs = Object.entries(refs).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+      summary.innerHTML = `
+        <div class="analytics-cards">
+          <div class="analytics-card">
+            <span class="analytics-value">${todayViews}</span>
+            <span class="analytics-label">今日</span>
+          </div>
+          <div class="analytics-card">
+            <span class="analytics-value">${last7}</span>
+            <span class="analytics-label">過去7日</span>
+          </div>
+          <div class="analytics-card">
+            <span class="analytics-value">${last30}</span>
+            <span class="analytics-label">過去30日</span>
+          </div>
+          <div class="analytics-card">
+            <span class="analytics-value">${totalViews}</span>
+            <span class="analytics-label">累計PV</span>
+          </div>
+        </div>
+        ${topRefs.length ? `
+        <h4 style="font-size:0.85rem;margin:20px 0 8px;font-weight:600">参照元 Top ${topRefs.length}</h4>
+        <ul style="font-size:0.82rem;color:#555;list-style:none;padding:0;margin:0">
+          ${topRefs.map(([host, cnt]) => `<li style="padding:4px 0;border-bottom:1px solid #eee">${host} <strong>${cnt}</strong></li>`).join('')}
+        </ul>` : ''}
+        <p class="analytics-note">※ このデータはこのブラウザのlocalStorageに記録された簡易ログです。全体のアクセスデータはGA4ダッシュボードで確認してください。</p>
+      `;
+    }
+
+    // Render when analytics tab is clicked
+    const analyticsTab = document.querySelector('[data-tab="analytics"]');
+    if (analyticsTab) {
+      analyticsTab.addEventListener('click', renderAnalytics);
+    }
+  })();
+
 })();
