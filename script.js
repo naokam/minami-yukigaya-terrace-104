@@ -454,13 +454,19 @@
       div.appendChild(thumb);
 
       div.addEventListener('click', () => {
-        // Deselect all
-        picker.querySelectorAll('.photo-toggle-item').forEach(el => el.classList.remove('selected-hero'));
-        div.classList.add('selected-hero');
-        // Apply immediately
-        heroImg.src = src;
-        localStorage.setItem('heroImage', src);
-        autoPublishIfTokenSet();
+        if (div.classList.contains('selected-hero')) {
+          // Cancel selection — revert to auto slideshow
+          div.classList.remove('selected-hero');
+          localStorage.removeItem('heroImage');
+          autoPublishIfTokenSet();
+        } else {
+          // Select this image
+          picker.querySelectorAll('.photo-toggle-item').forEach(el => el.classList.remove('selected-hero'));
+          div.classList.add('selected-hero');
+          heroImg.src = src;
+          localStorage.setItem('heroImage', src);
+          autoPublishIfTokenSet();
+        }
       });
 
       picker.appendChild(div);
