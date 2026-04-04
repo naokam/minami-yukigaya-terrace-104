@@ -1323,6 +1323,17 @@
   // ========================================
   (function initAnalytics() {
     const STORAGE_KEY = 'site_analytics';
+    const UID_KEY = 'site_analytics_uid';
+
+    // Generate or retrieve a unique visitor ID
+    function getUid() {
+      let uid = localStorage.getItem(UID_KEY);
+      if (!uid) {
+        uid = crypto.randomUUID ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).slice(2));
+        localStorage.setItem(UID_KEY, uid);
+      }
+      return uid;
+    }
 
     function getLog() {
       try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
@@ -1335,7 +1346,8 @@
       date: new Date().toISOString().slice(0, 10),
       path: location.pathname,
       ref: document.referrer || '(direct)',
-      ua: navigator.userAgent
+      ua: navigator.userAgent,
+      uid: getUid()
     };
     const log = getLog();
     log.push(entry);
@@ -1346,6 +1358,20 @@
     // Render analytics summary when the tab is opened
     const summary = document.getElementById('analyticsSummary');
     if (!summary) return;
+
+    function detectDevice(ua) {
+      if (/Mobile|Android.*Mobile|iPhone|iPod/.test(ua)) return 'スマホ';
+      if (/iPad|Android(?!.*Mobile)|Tablet/.test(ua)) return 'タブレット';
+      return 'PC';
+    }
+
+    function detectBrowser(ua) {
+      if (/Edg\//.test(ua)) return 'Edge';
+      if (/Chrome\//.test(ua) && !/Edg\//.test(ua)) return 'Chrome';
+      if (/Safari\//.test(ua) && !/Chrome\//.test(ua)) return 'Safari';
+      if (/Firefox\//.test(ua)) return 'Firefox';
+      return 'その他';
+    }
 
     function renderAnalytics() {
       const data = getLog();
@@ -1358,8 +1384,11 @@
       const last7 = data.filter(e => now - e.ts < 7 * day).length;
       const last30 = data.filter(e => now - e.ts < 30 * day).length;
 
-      // Unique days with visits
-      const uniqueDays = new Set(data.map(e => e.date)).size;
+      // Unique users
+      const totalUU = new Set(data.map(e => e.uid).filter(Boolean)).size;
+      const todayUU = new Set(data.filter(e => e.date === today).map(e => e.uid).filter(Boolean)).size;
+      const last7UU = new Set(data.filter(e => now - e.ts < 7 * day).map(e => e.uid).filter(Boolean)).size;
+      const last30UU = new Set(data.filter(e => now - e.ts < 30 * day).map(e => e.uid).filter(Boolean)).size;
 
       // Referrer breakdown
       const refs = {};
@@ -1372,7 +1401,22 @@
       });
       const topRefs = Object.entries(refs).sort((a, b) => b[1] - a[1]).slice(0, 5);
 
+      // Build unique user log (latest visit per uid)
+      const userMap = {};
+      data.forEach(e => {
+        if (!e.uid) return;
+        if (!userMap[e.uid] || e.ts > userMap[e.uid].ts) {
+          userMap[e.uid] = e;
+        }
+      });
+      // Count visits per user
+      const visitCounts = {};
+      data.forEach(e => { if (e.uid) visitCounts[e.uid] = (visitCounts[e.uid] || 0) + 1; });
+
+      const users = Object.values(userMap).sort((a, b) => b.ts - a.ts);
+
       summary.innerHTML = `
+        <h4 style="font-size:0.85rem;margin:0 0 8px;font-weight:600">ページビュー (PV)</h4>
         <div class="analytics-cards">
           <div class="analytics-card">
             <span class="analytics-value">${todayViews}</span>
@@ -1388,7 +1432,26 @@
           </div>
           <div class="analytics-card">
             <span class="analytics-value">${totalViews}</span>
-            <span class="analytics-label">累計PV</span>
+            <span class="analytics-label">累計</span>
+          </div>
+        </div>
+        <h4 style="font-size:0.85rem;margin:20px 0 8px;font-weight:600">ユニークユーザー (UU)</h4>
+        <div class="analytics-cards">
+          <div class="analytics-card">
+            <span class="analytics-value">${todayUU}</span>
+            <span class="analytics-label">今日</span>
+          </div>
+          <div class="analytics-card">
+            <span class="analytics-value">${last7UU}</span>
+            <span class="analytics-label">過去7日</span>
+          </div>
+          <div class="analytics-card">
+            <span class="analytics-value">${last30UU}</span>
+            <span class="analytics-label">過去30日</span>
+          </div>
+          <div class="analytics-card">
+            <span class="analytics-value">${totalUU}</span>
+            <span class="analytics-label">累計</span>
           </div>
         </div>
         ${topRefs.length ? `
@@ -1396,6 +1459,33 @@
         <ul style="font-size:0.82rem;color:#555;list-style:none;padding:0;margin:0">
           ${topRefs.map(([host, cnt]) => `<li style="padding:4px 0;border-bottom:1px solid #eee">${host} <strong>${cnt}</strong></li>`).join('')}
         </ul>` : ''}
+        <h4 style="font-size:0.85rem;margin:20px 0 8px;font-weight:600">ユーザーログ（直近${users.length}名）</h4>
+        <div style="max-height:300px;overflow-y:auto;border:1px solid #eee;border-radius:6px">
+          <table style="width:100%;font-size:0.78rem;border-collapse:collapse">
+            <thead><tr style="background:#f0f0f0;position:sticky;top:0">
+              <th style="padding:6px 8px;text-align:left">最終訪問</th>
+              <th style="padding:6px 8px;text-align:left">デバイス</th>
+              <th style="padding:6px 8px;text-align:left">ブラウザ</th>
+              <th style="padding:6px 8px;text-align:left">参照元</th>
+              <th style="padding:6px 8px;text-align:right">訪問回数</th>
+            </tr></thead>
+            <tbody>
+              ${users.map(u => {
+                let ref = '(direct)';
+                if (u.ref && u.ref !== '(direct)') { try { ref = new URL(u.ref).hostname; } catch { ref = u.ref; } }
+                const dt = new Date(u.ts);
+                const dateStr = dt.toLocaleDateString('ja-JP', {month:'numeric',day:'numeric'}) + ' ' + dt.toLocaleTimeString('ja-JP', {hour:'2-digit',minute:'2-digit'});
+                return `<tr style="border-bottom:1px solid #f0f0f0">
+                  <td style="padding:5px 8px">${dateStr}</td>
+                  <td style="padding:5px 8px">${detectDevice(u.ua)}</td>
+                  <td style="padding:5px 8px">${detectBrowser(u.ua)}</td>
+                  <td style="padding:5px 8px">${ref}</td>
+                  <td style="padding:5px 8px;text-align:right">${visitCounts[u.uid] || 1}</td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
         <p class="analytics-note">※ このデータはこのブラウザのlocalStorageに記録された簡易ログです。全体のアクセスデータはGA4ダッシュボードで確認してください。</p>
       `;
     }
