@@ -1,5 +1,5 @@
 {
-  "_version": "2026-04-04T05:14:27.563Z",
+  "_version": "2026-04-04T05:14:28.373Z",
   "theme": "green",
   "themeChosen": "false",
   "excludedPhotos": [
@@ -18,8 +18,7 @@
   "propertyInfo": {},
   "heroImage": "南雪谷テラス１０４紹介写真/DSC01749.jpeg",
   "heroImages": [
-    "南雪谷テラス１０４紹介写真/DSC01749.jpeg",
-    "南雪谷テラス１０４紹介写真/DSC01868.jpeg"
+    "南雪谷テラス１０４紹介写真/DSC01749.jpeg"
   ],
   "copyOverrides": {
     "green": {
