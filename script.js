@@ -19,9 +19,6 @@
   const lightboxClose = document.getElementById('lightboxClose');
   const lightboxPrev = document.getElementById('lightboxPrev');
   const lightboxNext = document.getElementById('lightboxNext');
-  const contactForm = document.getElementById('contactForm');
-  const formSuccess = document.getElementById('formSuccess');
-
   // Settings DOM
   const settingsOverlay = document.getElementById('settingsOverlay');
   const settingsClose = document.getElementById('settingsClose');
@@ -1275,55 +1272,6 @@
     });
   });
 
-  // ========================================
-  // Contact Form Validation
-  // ========================================
-  function validateField(input, errorEl, message) {
-    if (!input.validity.valid) {
-      input.classList.add('invalid');
-      errorEl.textContent = message;
-      return false;
-    }
-    input.classList.remove('invalid');
-    errorEl.textContent = '';
-    return true;
-  }
-
-  contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('name');
-    const email = document.getElementById('email');
-    const phone = document.getElementById('phone');
-    const message = document.getElementById('message');
-    let valid = true;
-
-    if (!validateField(name, document.getElementById('nameError'), 'お名前を入力してください。')) valid = false;
-    if (!validateField(email, document.getElementById('emailError'), '正しいメールアドレスを入力してください。')) valid = false;
-    if (phone.value && !/^[\d\-+() ]*$/.test(phone.value)) {
-      phone.classList.add('invalid');
-      document.getElementById('phoneError').textContent = '正しい電話番号を入力してください。';
-      valid = false;
-    } else {
-      phone.classList.remove('invalid');
-      document.getElementById('phoneError').textContent = '';
-    }
-    if (!validateField(message, document.getElementById('messageError'), 'お問い合わせ内容を入力してください。')) valid = false;
-
-    if (valid) {
-      contactForm.style.display = 'none';
-      formSuccess.classList.add('show');
-    }
-  });
-
-  contactForm.querySelectorAll('input, textarea').forEach(input => {
-    input.addEventListener('input', () => {
-      if (input.classList.contains('invalid')) {
-        input.classList.remove('invalid');
-        const errorEl = input.parentElement.querySelector('.error-msg');
-        if (errorEl) errorEl.textContent = '';
-      }
-    });
-  });
 
   // ========================================
   // Analytics — simple client-side page view log
