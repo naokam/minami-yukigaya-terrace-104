@@ -1,5 +1,5 @@
 /* ========================================
-   南雪谷テラス１０４ - Main Script
+   南雪谷テラス - Main Script
    ======================================== */
 
 (function () {
@@ -255,17 +255,17 @@
   // ========================================
   const themeCopy = {
     default: {
-      title: '南雪谷テラス１０４',
+      title: '南雪谷テラス',
       subtitle: '完全自由設計のコーポラティブハウス',
       lead: 'ロンドン王立芸術大学院で学んだオーナーが<br>間取りから素材まで一からデザインした住空間'
     },
     warm: {
-      title: '南雪谷テラス 104',
+      title: '南雪谷テラス',
       subtitle: '暮らしに、ぬくもりと美意識を。',
       lead: '閑静な低層住宅街に佇む、オーナーの感性が息づくメゾネット。<br>挽板の床、塗り壁、特注ブラインド——素材のひとつひとつに物語があります。'
     },
     mono: {
-      title: 'MINAMI-YUKIGAYA<br>TERRACE 104',
+      title: 'MINAMI-YUKIGAYA<br>TERRACE',
       subtitle: 'DESIGNER\'S MAISONETTE — 80\u33A1 / 3LDK',
       lead: ''
     },
@@ -275,17 +275,17 @@
       lead: '南向きの大窓から注ぐ陽光。プライベートテラスに揺れる緑。<br>第一種低層住居専用地域の静けさが、日常をやさしく包みます。'
     },
     luxury: {
-      title: '南雪谷テラス１０４',
+      title: '南雪谷テラス',
       subtitle: '唯一無二の、住空間',
       lead: 'Royal College of Art で研鑽を積んだオーナーが<br>空間・素材・光のすべてを設計した邸宅'
     },
     japanese: {
-      title: '南雪谷テラス　一〇四',
+      title: '南雪谷テラス',
       subtitle: '設えに、想いを宿す',
       lead: '塗り壁、挽板、特注建具——<br>素材と向き合い、暮らしの景色を整えた住まい。'
     },
     nordic: {
-      title: '南雪谷テラス 104',
+      title: '南雪谷テラス',
       subtitle: 'A calm place to call home.',
       lead: '穏やかな陽ざしと、心地よい静けさ。<br>南雪谷の低層住宅街に佇むデザイナーズメゾネット。'
     }
