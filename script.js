@@ -1226,13 +1226,13 @@
   // ========================================
   const heroSlideImg = document.getElementById('heroSlideImg');
   const heroSlidePhotos = [
-    '南雪谷テラス１０４紹介写真/DSC01724.jpeg',  // リビング
-    '南雪谷テラス１０４紹介写真/IMG_2150.jpeg',  // 外観
-    '南雪谷テラス１０４紹介写真/DSC01810.jpeg',  // キッチン
-    '南雪谷テラス１０４紹介写真/DSC01774.jpeg',  // 寝室
-    '南雪谷テラス１０４紹介写真/DSC01885.jpeg',  // 和室
-    '南雪谷テラス１０４紹介写真/DSC01827.jpeg',  // 水回り
-    '南雪谷テラス１０４紹介写真/IMG_9182.jpeg',  // テラス
+    'photos/DSC01724.jpeg',  // リビング
+    'photos/IMG_2150.jpeg',  // 外観
+    'photos/DSC01810.jpeg',  // キッチン
+    'photos/DSC01774.jpeg',  // 寝室
+    'photos/DSC01885.jpeg',  // 和室
+    'photos/DSC01827.jpeg',  // 水回り
+    'photos/IMG_9182.jpeg',  // テラス
   ];
   let heroSlideIndex = 0;
 
