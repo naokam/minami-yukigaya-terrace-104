@@ -5,6 +5,18 @@
 (function () {
   'use strict';
 
+  // ── Migrate old Japanese photo paths in localStorage ──
+  (function migratePhotoPaths() {
+    const oldPrefix = '\u5357\u96ea\u8c37\u30c6\u30e9\u30b9\uff11\uff10\uff14\u7d39\u4ecb\u5199\u771f/';
+    const keys = ['heroImage', 'heroImages', 'captions', 'excludedPhotos'];
+    keys.forEach(function (key) {
+      var val = localStorage.getItem(key);
+      if (val && val.indexOf(oldPrefix) !== -1) {
+        localStorage.setItem(key, val.replace(new RegExp(oldPrefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), 'photos/'));
+      }
+    });
+  })();
+
   // ── DOM References ──
   const hamburger = document.getElementById('hamburger');
   const headerNav = document.getElementById('headerNav');
