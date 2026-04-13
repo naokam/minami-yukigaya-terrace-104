@@ -1823,7 +1823,7 @@ ul {
 }
 
 .hero-img {
-  transition: opacity 0.8s ease;
+  transition: opacity 1.2s ease-in-out;
 }
 
 .hero-img.fade {

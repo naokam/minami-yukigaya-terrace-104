@@ -1270,12 +1270,21 @@
       const list = getHeroSlideList();
       if (list.length <= 1) return;
       heroSlideIndex = (heroSlideIndex + 1) % list.length;
+      // Preload next image
+      const preload = new Image();
+      preload.src = list[heroSlideIndex];
+      // Fade out
       heroSlideImg.classList.add('fade');
       setTimeout(() => {
         heroSlideImg.src = list[heroSlideIndex];
-        heroSlideImg.classList.remove('fade');
-      }, 800);
-    }, 5000);
+        // Wait for next frame then fade in
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            heroSlideImg.classList.remove('fade');
+          });
+        });
+      }, 1000);
+    }, 6000);
   }
 
   // ========================================
