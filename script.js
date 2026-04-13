@@ -262,32 +262,32 @@
     warm: {
       title: '南雪谷テラス',
       subtitle: '暮らしに、ぬくもりと美意識を。',
-      lead: '閑静な低層住宅街に佇む、オーナーの感性が息づくメゾネット。<br>挽板の床、塗り壁、特注ブラインド——素材のひとつひとつに物語があります。'
+      lead: '細部までこだわった戸建て感覚のデザイナーズメゾネット。<br>樺桜挽板の床、塗り壁、特注ブラインド——素材のひとつひとつに物語があります。'
     },
     mono: {
       title: 'MINAMI-YUKIGAYA<br>TERRACE',
       subtitle: 'DESIGNER\'S MAISONETTE — 80\u33A1 / 3LDK',
-      lead: ''
+      lead: 'Privacy, sunlight & breeze in a quiet residential area.<br>Surrounded by cherry blossoms and lush greenery.'
     },
     green: {
       title: '南雪谷テラス',
-      subtitle: '光と緑に守られた、穏やかな住まい',
-      lead: '南向きの大窓から注ぐ陽光。プライベートテラスに揺れる緑。<br>第一種低層住居専用地域の静けさが、日常をやさしく包みます。'
+      subtitle: '花と緑に守られた、穏やかな住まい',
+      lead: '駅から近い閑静な第一種低層住宅地。<br>プライバシーを確保した、日当たりと風通しのよいリビング。'
     },
     luxury: {
       title: '南雪谷テラス',
-      subtitle: '唯一無二の、住空間',
-      lead: 'Royal College of Art で研鑽を積んだオーナーが<br>空間・素材・光のすべてを設計した邸宅'
+      subtitle: '戸建て感覚の、デザイナーズメゾネット',
+      lead: 'Royal College of Art で学んだオーナーが<br>空間・素材・光の細部までこだわり抜いた住空間。'
     },
     japanese: {
       title: '南雪谷テラス',
       subtitle: '設えに、想いを宿す',
-      lead: '塗り壁、挽板、特注建具——<br>素材と向き合い、暮らしの景色を整えた住まい。'
+      lead: '閑静な低層住宅地に佇む、戸建て感覚のメゾネット。<br>塗り壁、挽板、特注建具——素材と向き合い、暮らしの景色を整えた住まい。'
     },
     nordic: {
       title: '南雪谷テラス',
-      subtitle: 'A calm place to call home.',
-      lead: '穏やかな陽ざしと、心地よい静けさ。<br>南雪谷の低層住宅街に佇むデザイナーズメゾネット。'
+      subtitle: '光と風が通り抜ける住まい。',
+      lead: '駅から近い、花と緑の豊かな閑静な住宅地。<br>プライバシーを確保した、日当たりと風通しのよいデザイナーズメゾネット。'
     }
   };
 
