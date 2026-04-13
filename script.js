@@ -257,37 +257,37 @@
     default: {
       title: '南雪谷テラス',
       subtitle: '細部までこだわった、戸建て感覚のデザイナーズメゾネット',
-      lead: '駅から近い閑静な第一種低層住宅地。<br>プライバシーを確保した日当たりと風通しのよいリビング。花と緑の豊かな環境。'
+      lead: '花と緑に包まれた閑静な低層住宅地、駅徒歩6分。<br>空が見える大窓から光と風が通り抜ける、プライバシーの守られたリビング。'
     },
     warm: {
       title: '南雪谷テラス',
       subtitle: '暮らしに、ぬくもりと美意識を。',
-      lead: '細部までこだわった戸建て感覚のデザイナーズメゾネット。<br>樺桜挽板の床、塗り壁、特注ブラインド——素材のひとつひとつに物語があります。'
+      lead: '細部までこだわり抜いた、戸建て感覚のデザイナーズメゾネット。<br>花と緑に囲まれた駅近の閑静な住宅地で、光あふれる暮らしを。'
     },
     mono: {
       title: 'MINAMI-YUKIGAYA<br>TERRACE',
-      subtitle: 'DESIGNER\'S MAISONETTE — 80\u33A1 / 3LDK',
-      lead: 'Privacy, sunlight & breeze in a quiet residential area.<br>Surrounded by cherry blossoms and lush greenery.'
+      subtitle: 'A designer\'s maisonette, crafted to the last detail.',
+      lead: 'A quiet, leafy neighbourhood just minutes from the station.<br>Sunlit living with privacy, natural breeze, and greenery at your door.'
     },
     green: {
       title: '南雪谷テラス',
       subtitle: '花と緑に守られた、穏やかな住まい',
-      lead: '駅から近い閑静な第一種低層住宅地。<br>プライバシーを確保した、日当たりと風通しのよいリビング。'
+      lead: '駅徒歩6分、閑静な第一種低層住宅地に佇むデザイナーズメゾネット。<br>光と風が通り抜けるリビングで、プライバシーに包まれた暮らし。'
     },
     luxury: {
       title: '南雪谷テラス',
-      subtitle: '戸建て感覚の、デザイナーズメゾネット',
-      lead: 'Royal College of Art で学んだオーナーが<br>空間・素材・光の細部までこだわり抜いた住空間。'
+      subtitle: '細部まで、妥協なく。',
+      lead: '戸建ての自由さとRC造の安心を兼ね備えたデザイナーズメゾネット。<br>花と緑の閑静な住宅地に、光と風に満たされた住空間。'
     },
     japanese: {
       title: '南雪谷テラス',
       subtitle: '設えに、想いを宿す',
-      lead: '閑静な低層住宅地に佇む、戸建て感覚のメゾネット。<br>塗り壁、挽板、特注建具——素材と向き合い、暮らしの景色を整えた住まい。'
+      lead: '花と緑に囲まれた閑静な低層住宅地、駅から徒歩6分。<br>日当たりと風通しを確かめながら、細部まで丁寧にしつらえた住まい。'
     },
     nordic: {
       title: '南雪谷テラス',
       subtitle: '光と風が通り抜ける住まい。',
-      lead: '駅から近い、花と緑の豊かな閑静な住宅地。<br>プライバシーを確保した、日当たりと風通しのよいデザイナーズメゾネット。'
+      lead: '駅から徒歩6分、花と緑に包まれた閑静な住宅地。<br>細部までこだわった戸建て感覚のメゾネットで、穏やかな日々を。'
     }
   };
 
