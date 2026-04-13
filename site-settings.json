@@ -1,5 +1,5 @@
 {
-  "_version": "2026-04-13T03:45:56.218Z",
+  "_version": "2026-04-13T03:46:14.907Z",
   "theme": "default",
   "themeChosen": "true",
   "excludedPhotos": [
@@ -75,8 +75,9 @@
     "IMG_0934.jpeg": "夜のエントランス — 桜とオートロック"
   },
   "propertyInfo": {},
-  "heroImage": "photos/DSC01749.jpeg",
+  "heroImage": "photos/DSC01715.jpeg",
   "heroImages": [
+    "photos/DSC01715.jpeg",
     "photos/DSC01749.jpeg",
     "photos/DSC07394.jpeg",
     "photos/DSC01819.jpeg",
