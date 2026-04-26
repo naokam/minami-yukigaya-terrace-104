@@ -1242,7 +1242,7 @@
     'photos/IMG_2150.jpeg',  // 外観
     'photos/DSC01810.jpeg',  // キッチン
     'photos/DSC01774.jpeg',  // 寝室
-    'photos/DSC01885.jpeg',  // 和室
+    'photos/DSC01880.jpeg',  // 和室
     'photos/DSC01827.jpeg',  // 水回り
     'photos/DSC01929.jpeg',  // テラス
   ];
