@@ -1244,7 +1244,7 @@
     'photos/DSC01774.jpeg',  // 寝室
     'photos/DSC01885.jpeg',  // 和室
     'photos/DSC01827.jpeg',  // 水回り
-    'photos/IMG_9182.jpeg',  // テラス
+    'photos/DSC01929.jpeg',  // テラス
   ];
   let heroSlideIndex = 0;
 
